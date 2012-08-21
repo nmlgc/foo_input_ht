@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.23"
+#define MYVERSION "2.0.24"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-21 18:45 UTC - kode54
+- Fixed signed saturation in DSP dynamic recompiler
+- Version is now 2.0.24
 
 2012-08-21 00:34 UTC - kode54
 - Implemented SCSP FM support properly

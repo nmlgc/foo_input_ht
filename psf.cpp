@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.24"
+#define MYVERSION "2.0.25"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-22 00:04 UTC - kode54
+- Lifted envelope generator code from the MAME core, improving emulation speed
+- Version is now 2.0.25
 
 2012-08-21 18:45 UTC - kode54
 - Fixed signed saturation in DSP dynamic recompiler

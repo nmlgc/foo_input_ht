@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.25"
+#define MYVERSION "2.0.26"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-23 20:03 UTC - kode54
+- Updated SCSP FM support, but it's still noisy for some reason
+- Version is now 2.0.26
 
 2012-08-22 00:04 UTC - kode54
 - Lifted envelope generator code from the MAME core, improving emulation speed

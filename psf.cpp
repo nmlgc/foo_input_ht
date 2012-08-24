@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.26"
+#define MYVERSION "2.0.27"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-24 20:19 UTC - kode54
+- Fixed SCSP FM by reducing render allowance to one sample at a time
+- Version is now 2.0.27
 
 2012-08-23 20:03 UTC - kode54
 - Updated SCSP FM support, but it's still noisy for some reason

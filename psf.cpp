@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.27"
+#define MYVERSION "2.0.28"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-25 02:04 UTC - kode54
+- Restructured SCSP/AICA sample generation
+- Version is now 2.0.28
 
 2012-08-24 20:19 UTC - kode54
 - Fixed SCSP FM by reducing render allowance to one sample at a time

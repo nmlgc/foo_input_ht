@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.28"
+#define MYVERSION "2.0.29"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-25 03:21 UTC - kode54
+- Increased DSF RAM to 8MB
+- Version is now 2.0.29
 
 2012-08-25 02:04 UTC - kode54
 - Restructured SCSP/AICA sample generation
@@ -702,10 +706,10 @@ static int load_exe_unpack(pfc::array_t<t_uint8> & dst, const BYTE *src, uLong s
 {
 	DBG("loading");
 	pfc::array_t<t_uint8> buf;
-	buf.set_size( 0x200004 );
+	buf.set_size( 0x800004 );
 	BYTE *ptr = buf.get_ptr();
 
-	uLong destlen = 0x200004;
+	uLong destlen = 0x800004;
 	uncompress(ptr, &destlen, src, srclen);
 	// ScrubFormat checks this, but I already did this :)
 	if (destlen < 4) return 0;
@@ -725,8 +729,8 @@ static int load_exe_unpack(pfc::array_t<t_uint8> & dst, const BYTE *src, uLong s
 	src_start &= 0x1FFFFF;
 	DWORD dst_len = dst.get_size() - 4;
 	DWORD src_len = buf.get_size() - 4;
-	if ( dst_len > 0x200000 ) dst_len = 0x200000;
-	if ( src_len > 0x200000 ) src_len = 0x200000;
+	if ( dst_len > 0x800000 ) dst_len = 0x800000;
+	if ( src_len > 0x800000 ) src_len = 0x800000;
 
 	if ( src_start < dst_start )
 	{
@@ -773,7 +777,7 @@ public:
 		{
 			DWORD start = pfc::byteswap_if_be_t( *(DWORD*)(m_executable.get_ptr()) );
 			DWORD length = m_executable.get_size();
-			DWORD max_length = ( m_version == 2 ) ? 0x200000 : 0x80000;
+			DWORD max_length = ( m_version == 2 ) ? 0x800000 : 0x80000;
 			if ((start + (length-4)) > max_length)
 			{
 				length = max_length - start + 4;

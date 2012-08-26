@@ -1,9 +1,13 @@
-#define MYVERSION "2.0.29"
+#define MYVERSION "2.0.30"
 
 //#define DISABLE_SSF
 
 /*
 	changelog
+
+2012-08-26 05:21 UTC - kode54
+- Implemented SCSP channel rendering order priority sorting to facilitate proper frequency modulation buffering
+- Version is now 2.0.30
 
 2012-08-25 03:21 UTC - kode54
 - Increased DSF RAM to 8MB

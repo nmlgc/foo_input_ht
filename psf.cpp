@@ -1,4 +1,4 @@
-#define MYVERSION "2.0.31"
+#define MYVERSION "2.0.32"
 
 //#define DISABLE_SSF
 
@@ -7,6 +7,10 @@
 
 2012-12-22 03:04 UTC - kode54
 - Added support for multi-value fields
+- Version is now 2.0.32
+
+2012-12-10 xx:xx UTC - kode54
+- Fixed SCSP status register handling based on AOSSF 1.21
 - Version is now 2.0.31
 
 2012-08-26 05:21 UTC - kode54

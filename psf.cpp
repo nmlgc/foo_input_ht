@@ -1,7 +1,11 @@
-#define MYVERSION "2.0.33"
+#define MYVERSION "2.0.34"
 
 /*
 	changelog
+
+2012-12-27 18:12 UTC - kode54
+- Added sample rate and channel information again
+- Version is now 2.0.34
 
 2012-12-27 16:51 UTC - kode54
 - Replaced bulky PSF loading code with new psflib
@@ -834,6 +838,8 @@ public:
 		}
 
 		m_info.set_length( (double)( tag_song_ms + tag_fade_ms ) * .001 );
+		m_info.info_set_int( "samplerate", 44100 );
+		m_info.info_set_int( "channels", 2 );
 
 		m_file = p_file;
 		m_path = p_path;

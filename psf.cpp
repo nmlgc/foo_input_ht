@@ -1,7 +1,11 @@
-#define MYVERSION "2.0.34"
+#define MYVERSION "2.0.35"
 
 /*
 	changelog
+
+2012-12-28 00:25 UTC - kode54
+- Fixed stupid bugs in mkhebios and psflib
+- Version is now 2.0.35
 
 2012-12-27 18:12 UTC - kode54
 - Added sample rate and channel information again

@@ -645,8 +645,8 @@ static int sdsf_load(void * context, const uint8_t * exe, size_t exe_size,
 
 	uint32_t dst_start = pfc::byteswap_if_be_t( *(uint32_t*)(dst.get_ptr()) );
 	uint32_t src_start = pfc::byteswap_if_be_t( *(uint32_t*)(exe) );
-	dst_start &= 0x1FFFFF;
-	src_start &= 0x1FFFFF;
+    dst_start &= 0x7FFFFF;
+    src_start &= 0x7FFFFF;
 	DWORD dst_len = dst.get_size() - 4;
 	DWORD src_len = exe_size - 4;
 	if ( dst_len > 0x800000 ) dst_len = 0x800000;

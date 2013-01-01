@@ -1,7 +1,11 @@
-#define MYVERSION "2.0.35"
+#define MYVERSION "2.0.36"
 
 /*
 	changelog
+
+2013-01-01 02:25 UTC - kode54
+- Fixed file hint reading and tag writing
+- Version is now 2.0.36
 
 2012-12-28 00:25 UTC - kode54
 - Fixed stupid bugs in mkhebios and psflib
@@ -675,6 +679,55 @@ static int sdsf_load(void * context, const uint8_t * exe, size_t exe_size,
 	return 0;
 }
 
+static class psf_file_container
+{
+	critical_section lock;
+
+	struct psf_file_opened
+	{
+		pfc::string_simple path;
+		file::ptr f;
+
+		psf_file_opened() { }
+
+		psf_file_opened( const char * _p )
+			: path( _p ) { }
+
+		psf_file_opened( const char * _p, file::ptr _f )
+			: path( _p ), f( _f ) { }
+
+		bool operator== ( psf_file_opened const& in ) const
+		{
+			return !strcmp( path, in.path );
+		}
+	};
+
+	pfc::list_t<psf_file_opened> hints;
+
+public:
+	void add_hint( const char * path, file::ptr f )
+	{
+		insync( lock );
+		hints.add_item( psf_file_opened( path, f ) );
+	}
+
+	void remove_hint( const char * path )
+	{
+		insync( lock );
+		hints.remove_item( psf_file_opened( path ) );
+	}
+
+	bool try_hint( const char * path, file::ptr & out )
+	{
+		insync( lock );
+		t_size index = hints.find_item( psf_file_opened( path ) );
+		if ( index == ~0 ) return false;
+		out = hints[ index ].f;
+		out->reopen( abort_callback_dummy() );
+		return true;
+	}
+} g_hint_list;
+
 struct psf_file_state
 {
 	file::ptr f;
@@ -685,7 +738,8 @@ static void * psf_file_fopen( const char * uri )
 	try
 	{
 		psf_file_state * state = new psf_file_state;
-		filesystem::g_open( state->f, uri, filesystem::open_mode_read, abort_callback_dummy() );
+		if ( !g_hint_list.try_hint( uri, state->f ) )
+			filesystem::g_open( state->f, uri, filesystem::open_mode_read, abort_callback_dummy() );
 		return state;
 	}
 	catch (...)
@@ -809,11 +863,15 @@ public:
 			}
 			if ( yam ) yam_unprepare_dynacode( yam );
 		}
+		g_hint_list.remove_hint( m_path );
 	}
 
 	void open( service_ptr_t<file> p_file, const char * p_path, t_input_open_reason p_reason, abort_callback & p_abort )
 	{
 		input_open_file_helper( p_file, p_path, p_reason, p_abort );
+
+		m_path = p_path;
+		g_hint_list.add_hint( p_path, p_file );
 
 		xsf_version = psf_load( p_path, &psf_file_system, 0, 0, 0, 0, 0 );
 
@@ -846,7 +904,6 @@ public:
 		m_info.info_set_int( "channels", 2 );
 
 		m_file = p_file;
-		m_path = p_path;
 	}
 
 	void get_info( file_info & p_info, abort_callback & p_abort )

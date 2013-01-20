@@ -1,7 +1,13 @@
-#define MYVERSION "2.0.36"
+#define MYVERSION "2.0.37"
 
 /*
 	changelog
+
+2013-01-20 00:56 UTC - kode54
+- Fixed memory protection cleanup
+- Configuration and playback now prevents the case of both dry and reverb
+  being disabled
+- Version is now 2.0.37
 
 2013-01-01 02:25 UTC - kode54
 - Fixed file hint reading and tag writing
@@ -851,7 +857,7 @@ public:
 		if ( sega_state.get_size() )
 		{
 			void * yam = 0;
-			if ( xsf_version == 2 )
+			if ( xsf_version == 0x12 )
 			{
 				void * dcsound = sega_get_dcsound_state( sega_state.get_ptr() );
 				yam = dcsound_get_yam_state( dcsound );
@@ -931,7 +937,7 @@ public:
 		if ( sega_state.get_size() )
 		{
 			void * yam = 0;
-			if ( xsf_version == 2 )
+			if ( xsf_version == 0x12 )
 			{
 				void * dcsound = sega_get_dcsound_state( sega_state.get_ptr() );
 				yam = dcsound_get_yam_state( dcsound );
@@ -950,7 +956,7 @@ public:
 
 		sega_clear_state( pEmu, xsf_version - 0x10 );
 
-		sega_enable_dry( pEmu, cfg_dry );
+		sega_enable_dry( pEmu, cfg_dry ? 1 : !cfg_dsp );
 		sega_enable_dsp( pEmu, cfg_dsp );
 
 		int dynarec = cfg_dsp_dynarec;
@@ -1514,6 +1520,11 @@ void CMyPreferences::apply() {
 	cfg_suppressendsilence = SendDlgItemMessage( IDC_SES, BM_GETCHECK );
 	cfg_dry = SendDlgItemMessage( IDC_DRY, BM_GETCHECK );
 	cfg_dsp = SendDlgItemMessage( IDC_DSP, BM_GETCHECK );
+	if ( !cfg_dry && !cfg_dsp )
+	{
+		cfg_dry = 1;
+		SendDlgItemMessage( IDC_DRY, BM_SETCHECK, 1 );
+	}
 	cfg_dsp_dynarec = SendDlgItemMessage( IDC_DSP_DYNAREC, BM_GETCHECK );
 	t = GetDlgItemInt( IDC_SILENCE, NULL, FALSE );
 	if ( t > 0 ) cfg_endsilenceseconds = t;
